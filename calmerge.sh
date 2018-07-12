@@ -2,12 +2,19 @@
 
 # Config
 allow_summary=1  # Set to 0 to blank all event names
-in_files="file1.ics file2.ics"  # As many as you want (more than one) separated by spaces
-out_file="out.ics"  # Output to a Dropbox folder to share it easily
+in_urls="http://server.com/calendar1.ics http://server.com/calendar2.ics"  # As many as you want (more than one) separated by spaces
+out_file="out.ics"  # Output to a Dropbox folder to share it easily. Use full paths (e.g. /home/user/Dropbox/out.ics)
 calname="out"  # Name that will be displayed in the client. Leave blank to use first calendar's name
 
 # Code starts here
 rm -f "$out_file"
+
+in_files=""
+for url in $in_urls; do
+    name=$RANDOM.ics
+    wget $url -qO $name
+    in_files="$in_files $name"
+done
 
 allowed="DTEND DTSTAMP SEQUENCE DTSTART CREATED LAST-MODIFIED RRULE RECURRENCE-ID EXDATE"  # Allowed fields for events
 [[ $allow_summary -eq 1 ]] && allowed="$allowed SUMMARY"
@@ -35,3 +42,5 @@ for in_file in $in_files; do
 done
 
 echo "END:VCALENDAR" >> $out_file
+
+for file in $in_files; do rm $file; done
