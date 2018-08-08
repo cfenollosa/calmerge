@@ -1,5 +1,5 @@
 # calmerge
-Merge all events from multipla calendars into a single calendar
+Merge all events from multiple calendars into a single calendar
 
 ## Usage
 
